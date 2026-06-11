@@ -12,7 +12,10 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Displays the account settings form for the authenticated user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
      */
     public function edit(Request $request): View
     {
@@ -22,7 +25,11 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile information.
+     * Updates the authenticated user's account information.
+     * Clears email verification if the email address has changed.
+     *
+     * @param \App\Http\Requests\ProfileUpdateRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
@@ -38,7 +45,10 @@ class ProfileController extends Controller
     }
 
     /**
-     * Delete the user's account.
+     * Deletes the authenticated user's account and invalidates the session.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request): RedirectResponse
     {

@@ -15,6 +15,12 @@ class MessageController extends Controller
         private readonly MessageService $messageService
     ) {}
 
+    /**
+     * Broadcasts a typing indicator to the other participant in the conversation.
+     *
+     * @param \App\Models\Conversation $conversation
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function typing(Conversation $conversation): JsonResponse
     {
         abort_unless($conversation->participants->contains(Auth::id()), 403);
@@ -26,6 +32,12 @@ class MessageController extends Controller
         return response()->json(['ok' => true]);
     }
 
+    /**
+     * Marks all unread incoming messages in the conversation as read for the authenticated user.
+     *
+     * @param \App\Models\Conversation $conversation
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function markRead(Conversation $conversation): JsonResponse
     {
         abort_unless($conversation->participants->contains(Auth::id()), 403);
@@ -37,6 +49,13 @@ class MessageController extends Controller
         return response()->json(['ok' => true]);
     }
 
+    /**
+     * Sends a new message in the conversation and broadcasts it to the other participant.
+     *
+     * @param \App\Http\Requests\SendMessageRequest $request
+     * @param \App\Models\Conversation $conversation
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(SendMessageRequest $request, Conversation $conversation): JsonResponse
     {
         abort_unless($conversation->participants->contains(Auth::id()), 403);
